@@ -9,11 +9,16 @@ import com.bishal.Bank.customer.service.ICustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
+
+import static com.bishal.Bank.account.constant.AccountConstant.DbFieldMappers.*;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
@@ -37,6 +42,38 @@ public class AccountServiceImpl implements IAccountService {
         customerService.addDetails(accountDetails.getPanNumber(), accountDetails.getAccountNo());
         return accountDetails;
     }
+
+    @Override
+    public BankAccount getBankDetails(String accountNumber) {
+        return accounDao.findById(accountNumber);
+    }
+
+    @Override
+    public void updateCurrentBalance(double remainingAmount, String accountNumber) {
+        Query query = getFindByIdQuery(accountNumber);
+        Update update = getUpdateAccountList(CURRENT_BALANCE, remainingAmount);
+        accounDao.update(query, update);
+    }
+
+    private Query getFindByIdQuery(String accountNumber) {
+        return getQuery(_ID, accountNumber);
+    }
+
+    private Query getQuery(String key, String value) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where(key).is(value));
+        return query;
+    }
+
+    private Update getUpdateAccountList(String key, Double value) {
+        Update update = new Update()
+                .set(key, value);
+        return update;
+    }
+
+//    private Query getUpdateCustomerDetailsQuery(String panNumber) {
+//        return getQuery(_ID, panNumber);
+//    }
 
     private BankAccount getBankAccountDetails(BankAccountMapper bankAccountMapper) {
         final BankAccount bankAccount = new BankAccount();

@@ -1,6 +1,5 @@
 package com.bishal.Bank.account.model;
 
-import com.bishal.Bank.common.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

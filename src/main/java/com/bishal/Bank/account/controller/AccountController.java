@@ -24,4 +24,15 @@ public class AccountController {
                     .body(ex.getMessage());
         }
     }
+
+    @GetMapping("/details/{accountNumber}")
+    public ResponseEntity getAccountDetails(@PathVariable("accountNumber") String accountNumber){
+        try{
+            final BankAccount bankAccount = accountService.getBankDetails(accountNumber);
+            return ResponseEntity.ok(bankAccount);
+        }catch (Exception ex){
+            return ResponseEntity.badRequest()
+                    .body(ex.getMessage());
+        }
+    }
 }

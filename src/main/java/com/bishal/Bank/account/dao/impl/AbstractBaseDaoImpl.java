@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import java.util.List;
+
 public abstract class AbstractBaseDaoImpl<T> {
 
     @Autowired
@@ -23,5 +25,9 @@ public abstract class AbstractBaseDaoImpl<T> {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         return mongoTemplate.findOne(query, clazz);
+    }
+
+    public List<T> find(Query query, Class<T> clazz){
+        return mongoTemplate.find(query, clazz);
     }
 }
