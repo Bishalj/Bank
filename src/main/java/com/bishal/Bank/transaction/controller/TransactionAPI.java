@@ -19,7 +19,7 @@ public class TransactionAPI {
     private ITransactionService transactionService;
 
     @PostMapping("/{type}")
-    public ResponseEntity withdraw(@RequestBody TransactionMapper transactionMapper, @PathVariable("type") String type){
+    public ResponseEntity transaction(@RequestBody TransactionMapper transactionMapper, @PathVariable("type") String type){
         try{
             Transaction transaction = transactionService.transactionAmount(transactionMapper, type);
             return ResponseEntity.ok("Transaction Successfully with transaction Id: "+ transaction.getTransactionId());
